@@ -1,21 +1,25 @@
 const user1 = {
   fullName: "Testov Test Testovich",
   clientLevel: 'basic',
+  availableMoney: 1000,
 };
 
 const user2 = {
   fullName: 'Nullov Null Nullovich',
   clientLevel: 'pro',
+  availableMoney: 5000,
 };
 
 const user3 = {
   fullName: 'Nanov Nan Nanovich',
   clientLevel: 'platinum',
+  availableMoney: 10000,
 };
 
 const user4 = {
   fullName: 'Userenko User Userovich',
   clientLevel: undefined,
+  availableMoney: 1000,
 };
 
 const bank1 = {
@@ -44,10 +48,17 @@ connectionLevels.set(user1.clientLevel, basic)
 
 const calculateTotalSum = (user, basicSum) => {
   let totalSum = 0;
-  if (connectionLevels.has(user.clientLevel) && connectionLevels.get(user.clientLevel) != undefined ) {
-    totalSum = basicSum - (basicSum * connectionLevels.get(user.clientLevel).discount);
-    return totalSum;
+  if (basicSum > user.availableMoney) {
+    const lackSum = basicSum - availableMoney;
+    throw new RangeError(`You lack ${lackSum} for purchaseж`)
   } else {
-    return basicSum;
+    if (connectionLevels.has(user.clientLevel) && connectionLevels.get(user.clientLevel) != undefined ) {
+      totalSum = basicSum - (basicSum * connectionLevels.get(user.clientLevel).discount);
+      user.availableMoney = user.availableMoney - totalSum;
+      return totalSum;
+    } else {
+      return basicSum;
+    }
   }
+  
 }
